@@ -4,7 +4,6 @@ import glob
 import pandas as pd 
 
 #Move to right path
-os.chdir("data_collected")
 os.chdir("individual_data_csv")
 
 #List all CSV Files in directory

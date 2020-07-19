@@ -20,19 +20,31 @@ combined_file.to_csv("all_data.csv", index = False, encoding = 'utf-8-sig')
 
 
 
+
+#Boxplot to see how each scenario varies
+sns.boxplot(x="SCENARIO", y="RSSI", data=combined_file)
+plt.show()
+plt.clf()
+#This shows that most of the datas look symmetrical, and there are a bunch of outliers in the data. The means for each value vary by a lot. The relative similarity doesn't matter because we didn't account for the distance in this plot
+
 #Scatterplot with color coded - all data:
 sns.scatterplot(x="DISTANCE", y="RSSI", hue="SCENARIO", data=combined_file, palette='colorblind', legend='full')
 plt.show()
+plt.clf()
 
 
 
 #Focus on the initial data, where there is no obstruction between the two raspberry pis to understand the basis of my experiment and the data I've collected.
 #Read data
-
-#df = pd.read_csv('none_list.csv')
-#print(df.head(10))    #View first 10 of the file
+df = pd.read_csv('none_list.csv')
+df.head(10)   
 
 #Create scatterplot to see how each distance varies:
-#plt.scatter(df['DISTANCE'], df['RSSI'])
-#plt.savefig('scatter_none.png')
+plt.scatter(df['DISTANCE'], df['RSSI'])
+plt.show()
+plt.clf()
+
+#Distribution for each distance
+
+
 
