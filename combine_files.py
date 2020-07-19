@@ -25,10 +25,9 @@ all_scenarios = [none_list, rec_thin_list, trans_thin_list, both_thin_list, rec_
 all_scenarios_names = ["none_list", "rec_thin_list", "trans_thin_list", "both_thin_list", "rec_purse_list", "trans_purse_list", "both_purse_list", "rec_hand_list", "trans_hand_list", "both_hand_list"]
 
 #Concatenate files that belong to one scenario:
-def createOneCSV(file_list, output_file):
-	result = pd.concat([pd.read_csv(file) for file in file_list])
-	result.to_csv(output_file, index=False, encoding="utf-8")
+i = 0
+for name in all_scenarios:
+	combined_file = pd.concat([pd.read_csv(f) for f in name])
+	combined_file.to_csv(all_scenarios_names[i] + ".csv", index = False, encoding = 'utf-8-sig')
+	i += 1
 
-for i in range(len(all_scenarios_names)):
-	output_file = all_scenarios_names[i] + ".csv"
-	createOneCSV(all_scenarios[i], output_file)
