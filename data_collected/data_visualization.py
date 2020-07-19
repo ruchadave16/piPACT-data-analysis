@@ -19,9 +19,13 @@ combined_file.to_csv("all_data.csv", index = False, encoding = 'utf-8-sig')
 
 
 
+
 #Scatterplot with color coded - all data:
 sns.scatterplot(x="DISTANCE", y="RSSI", hue="SCENARIO", data=combined_file, palette='colorblind', legend='full')
 plt.show()
+
+
+
 #Focus on the initial data, where there is no obstruction between the two raspberry pis to understand the basis of my experiment and the data I've collected.
 #Read data
 
