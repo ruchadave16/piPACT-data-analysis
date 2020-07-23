@@ -52,7 +52,18 @@ print(df.head())
 
 #Create distribution plot
 sns.FacetGrid(df, size=5, hue="GROUP").map(sns.distplot, "RSSI").add_legend()
-plt.show()
 plt.clf()
 #This shows that the distributions for less than and greater than 1m are very diff, and will probably need to be analyzed separately
 
+#To create a similar distribution understanding of the complete dataset: to see if the 1m conclusion works for the whole dataset as well
+comb_data = pd.read_csv('all_data.csv', header=0)
+comb_data["GROUP"] = 'B'
+for i in range(len(comb_data)):
+    if comb_data["DISTANCE"][i] == 0.25 or comb_data["DISTANCE"][i] == 0.5:
+        comb_data["GROUP"][i] = 'A'
+print(df.head())
+
+#Distribution plot for all data:
+sns.FacetGrid(comb_data, size=5, hue="GROUP").map(sns.distplot, "RSSI").add_legend()
+plt.clf()
+#This shows that althought it is slightly more overlaping, the two distributions appear pretty different. Maybe do a hypothesis test to confirm
