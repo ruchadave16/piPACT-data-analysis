@@ -67,3 +67,7 @@ print(df.head())
 sns.FacetGrid(comb_data, size=5, hue="GROUP").map(sns.distplot, "RSSI").add_legend()
 plt.clf()
 #This shows that althought it is slightly more overlaping, the two distributions appear pretty different. Maybe do a hypothesis test to confirm
+
+
+
+p
