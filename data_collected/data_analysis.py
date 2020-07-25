@@ -31,7 +31,7 @@ combined_file_r.to_csv("rec_all_list.csv", index = False, encoding = 'utf-8-sig'
 
 #Null: The RSSI values for the trans and rec list with the same other variables are the same
 #Alternate: The RSSI values for the trans and rec list are different
-#95% confidence level
+#90% confidence level
 ###################################################################################################################################################################
 
 df = pd.read_csv('trans_all_list.csv')
@@ -52,7 +52,9 @@ print("Trans is: ", stat, p, " and rec is: ", stat_r, p_r)
 #Now run a paired t-test: for each distance, you want the two means to be compared
 
 print(stats.ttest_rel(trans_table, rec_table))
-
+#This results in the test statistic being 1.97032 and the p-value being 0.07710
+#Because the alpha value selected is 0.10, the current p-value is lower than this, meaning that the results are significant and the null can be rejected. 
+#There is no significant difference between the trans and rec data --> which pi is being affected does not change the data significantly for this experiment.
 
 
 
