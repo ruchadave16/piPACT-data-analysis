@@ -7,7 +7,7 @@
 
 
 # - Make second model with just considering distance
-# - ML model that detects whether within 1m or not (3ft) - then it says unsafe immediately given what category it falls into
+# - ML model that detects whether within 1m or not (3ft) - then it says unsafe immediately given what category it falls into - categorical
 
 ######################################################################################################################################################################
 
@@ -26,7 +26,7 @@ os.chdir("combined_csv")
 ######################################################################################################################################################################
 
 def f(x): #This takes in x as the distance and outputs the time limit 
-	return 18.49909 + ((0.9448442 - 18.49909)/(1 + (x/1.745409)^0.9872099)) #For this, I plotted a few points: (0, 1), (1, 8), (2, 10), (11, 16) and fitted the curve
+	return 15.9325 - (14.68626/2**(x/1.342586)) #For this, I plotted a few points: (0, 1), (1, 8), (2, 10), (11, 16) and fitted the curve
 
 #In this model, you input where your phone was, and based on the id where the other person's phone was as well and it chooses one of the following linear regression models
 #Create Dataframes
@@ -45,6 +45,17 @@ both_hand = read_d("both_hand_list.csv")
 one_cloth = pd.concat([read_d("rec_thin_list.csv"), read_d("trans_thin_list.csv")])
 both_cloth = read_d("both_thin_list.csv")
 
+#Total number of RSSI values in 1 min for each group:
+none_1min = none.shape[0]/11
+one_purse_1min = one_purse.shape[0]/11
+both_purse_1min = both_purse.shape[0]/11
+one_hand_1min = one_hand.shape[0]/11
+both_hand_1min = both_hand.shape[0]/11
+one_cloth_1min = one_cloth.shape[0]/11
+both_cloth_1min = both_cloth.shape[0]/11
+
+min_values_list = [none_1min, one_purse_1min, both_purse_1min, one_hand_1min, both_hand_1min, one_cloth_1min, both_cloth_1min]
+
 #Split training and test data
 def split_d(data):
 	#This function takes in a dataset and returns the X and y dataframes, where X has the RSSI values that are being inputted to predict the y, or distance.
@@ -61,6 +72,8 @@ X_train_both_hand, X_test_both_hand, y_train_both_hand, y_test_both_hand = split
 X_train_one_cloth, X_test_one_cloth, y_train_one_cloth, y_test_one_cloth = split_d(one_cloth)
 X_train_both_cloth, X_test_both_cloth, y_train_both_cloth, y_test_both_cloth = split_d(both_cloth)
 
+print(X_train_none.shape)
+
 #Train the models on simple regressor. Based on how the output is, see if a more complicated model is necessary
 regressor = LinearRegression()  
 
@@ -72,6 +85,8 @@ both_hand_r = regressor.fit(X_train_both_hand, y_train_both_hand)
 one_cloth_r = regressor.fit(X_train_one_cloth, y_train_one_cloth)
 both_cloth_r = regressor.fit(X_train_both_cloth, y_train_both_cloth)
 
+regressor_list = [none_r, one_purse_r, both_purse_r, one_hand_r, both_hand_r, one_cloth_r, both_cloth_r]
+
 #Test the models' accuracy
 y_pred_none = none_r.predict(X_test_none)
 y_pred_one_purse = one_purse_r.predict(X_test_one_purse)
@@ -81,8 +96,7 @@ y_pred_both_hand = both_hand_r.predict(X_test_both_hand)
 y_pred_one_cloth = one_cloth_r.predict(X_test_one_cloth)
 y_pred_both_cloth = both_cloth_r.predict(X_test_both_cloth)
 
-
-def fit_tester(x, a, b):
+def fit_tester(x, a, b): #x is the category, a is the y test values and b is the predicted values for y
 	print('\n')
 	print(x)
 	print('Mean Absolute Error:', metrics.mean_absolute_error(a, b))  
@@ -97,7 +111,23 @@ fit_tester('both_hand', y_test_both_hand, y_pred_both_hand) #MSE = 7.633657 RSME
 fit_tester('one_cloth', y_test_one_cloth, y_pred_one_cloth) #MSE = 0.64123 RSME = 0.80077
 fit_tester('both_cloth', y_test_both_cloth, y_pred_both_cloth) #MSE = 0.860338 RSME = 0.927544
 
-#To compare this with other predicters: see if MSE can be lowered
+#Created function that follows this process with an input
+def predict_distance(condition_phones, array_RSSI):
+	tot_values = array_RSSI.shape[0]
+	ind = model_list.index(condition_phones)
+	min_contacted = tot_values / (min_values_list[ind])
+	model = regressor_list[ind]
+	pred = model.predict(array_RSSI) #Returns array with all predicted distances in m
+	distance = np.mean(pred)
+	safe_time = f(distance)
+	if min_contacted > safe_time:
+		print("Unsafe")
+		return "Unsafe contact"
+	else:
+		print("Safe")
+		return "Safe contact"
+
+predict_distance('none', np.array([[-40], [-42], [-47], [-50]]))
 
 
 
