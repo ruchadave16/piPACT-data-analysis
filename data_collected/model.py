@@ -141,7 +141,9 @@ def predict_distance(condition_phones, array_RSSI):
 		print("Safe")
 		return "Safe contact"
 
+#Example:
 predict_distance('none', np.array([[-40], [-42], [-47], [-50]]))
+
 
 
 
