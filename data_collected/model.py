@@ -121,7 +121,7 @@ fit_tester('both_cloth', y_test_both_cloth, y_pred_both_cloth) #MSE = 0.860338 R
 
 
 ######################################################################################################################################################################
-#Create function that mimics a simplified version of the overall process 
+#Create algorithm that mimics a simplified version of the overall process 
 ######################################################################################################################################################################
 
 def predict_distance(condition_phones, array_RSSI): 
