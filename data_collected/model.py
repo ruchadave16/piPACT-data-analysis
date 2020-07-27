@@ -111,7 +111,7 @@ def fit_tester(x, a, b): #x is the category, a is the y test values and b is the
 	print('Mean Squared Error:', metrics.mean_squared_error(a, b))  
 	print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(a, b)))
 
-fit_tester('none', y_test_none, y_pred_none) #MSE = 1.7929 RMSE = 13389
+fit_tester('none', y_test_none, y_pred_none) #MSE = 1.7929 RMSE = 1.3389
 fit_tester('one_purse', y_test_one_purse, y_pred_one_purse) #MSE = 1.15758 RSME = 1.07591
 fit_tester('both_purse', y_test_both_purse, y_pred_both_purse) #MSE = 1.3590 RSME = 1.16576
 fit_tester('one_hand', y_test_one_hand, y_pred_one_hand) #MSE = 1.99763 RSME = 1.413377
