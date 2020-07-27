@@ -7,7 +7,7 @@ from scipy.stats import shapiro
 
 os.chdir("combined_csv")
 
-#Create files needed
+#Create files needed - combine the trans files into one file and the rec files into one file
 trans_rec = ["trans_thin_list.csv", "rec_hand_list.csv", "rec_purse_list.csv", "trans_purse_list.csv", "rec_thin_list.csv", "trans_hand_list.csv"]
 trans_list = []
 trans_list.append(trans_rec[0])
@@ -37,6 +37,7 @@ combined_file_r.to_csv("rec_all_list.csv", index = False, encoding = 'utf-8-sig'
 df = pd.read_csv('trans_all_list.csv')
 df_rec = pd.read_csv('rec_all_list.csv')
 
+#Create table with Distance and RSSI - finds the mean of the RSSI values for each distance.
 trans_table = df.groupby(["DISTANCE"])["RSSI"].mean()
 rec_table = df_rec.groupby(["DISTANCE"])["RSSI"].mean()
 print(trans_table)
